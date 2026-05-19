@@ -1,0 +1,13 @@
+# ─── Prod Environment Overrides ───────────────────────────────────────────────
+# These values override the defaults in charts/petclinic/values.yaml
+# for the prod environment only.
+
+replicaCount: 3
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "500m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"

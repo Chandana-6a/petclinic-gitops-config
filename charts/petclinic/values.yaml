@@ -1,0 +1,37 @@
+image:
+  repository: ecr_repo_url
+  tag: "9"
+  pullPolicy: Always
+
+# ─── Deployment ───────────────────────────────────────────────────────────────
+
+replicaCount: 3
+
+# ─── Service ──────────────────────────────────────────────────────────────────
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 8080
+
+# ─── Resources ────────────────────────────────────────────────────────────────
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "250m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+# ─── Probes ───────────────────────────────────────────────────────────────────
+
+livenessProbe:
+  path: /
+  initialDelaySeconds: 60
+  periodSeconds: 10
+
+readinessProbe:
+  path: /
+  initialDelaySeconds: 30
+  periodSeconds: 10

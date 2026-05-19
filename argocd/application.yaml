@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: petclinic
+  namespace: argocd
+spec:
+  project: default
+
+  # ─── Source ─────────────────────────────────────────────────────────────────
+  # ArgoCD watches this repo. When Jenkins updates image tag in values.yaml,
+  # ArgoCD detects the change and automatically syncs the cluster.
+
+  source:
+    repoURL: https://github.com/user_name/petclinic-gitops-config.git
+    targetRevision: main
+    path: charts/petclinic
+    helm:
+      valueFiles:
+        - values.yaml
+        - ../../environments/dev/values-dev.yaml
+
+  # ─── Destination ────────────────────────────────────────────────────────────
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: petclinic
+
+
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true    # creates petclinic namespace automatically
